@@ -1,20 +1,29 @@
 import "./App.css";
 import { client } from "./http";
 import classnames from "classnames";
-import Avatar from "material-ui/Avatar";
-import TextField from "material-ui/TextField";
 import React, { Component, Fragment } from "react";
-import CircularProgress from "material-ui/CircularProgress";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from "material-ui/Table";
-import { Divider } from "material-ui";
+  Avatar,
+  CircularProgress,
+  Divider,
+  FontIcon,
+  GridList,
+  GridTile,
+  IconButton,
+  TextField,
+} from "material-ui";
+
+const styles = {
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+  },
+  gridList: {
+    width: 500,
+  },
+};
 
 class App extends Component {
   state = {
@@ -45,9 +54,27 @@ class App extends Component {
     }
   };
 
+  openGithubProfile = url => {
+    window.open(url, { target: "_blank" });
+  };
+
   render() {
-    window.client = client;
     const { users, fetching } = this.state;
+
+    const textFieldStyles = {
+      hintStyle: {
+        color: "rgba(255,255,255,0.4)",
+      },
+      inputStyle: {
+        color: "#72DDF7",
+      },
+      underlineStyle: {
+        borderColor: "rgba(255, 255, 255, 0.25)",
+      },
+      underlineFocusStyle: {
+        borderColor: "#72DDF7",
+      },
+    };
 
     return (
       <MuiThemeProvider>
@@ -56,46 +83,37 @@ class App extends Component {
             <TextField
               hintText="Search Users"
               onChange={this.handleChange}
-              hintStyle={{
-                color: "rgba(255,255,255,0.4)",
-              }}
-              underlineStyle={{
-                borderColor: "rgba(255, 255, 255, 0.25)",
-              }}
-              underlineFocusStyle={{
-                borderColor: "#72DDF7",
-              }}
+              {...textFieldStyles}
             />
           </section>
-          <Divider inset={true} />
-          <section className="results">
-            {fetching && <CircularProgress />}
-            <Table className={classnames("results-table", {
-              "results-table-show": users.length > 0
-            })} selectable={false}>
-              <TableHeader displayRowCheckbox={false}>
-                <TableRow>
-                  <TableHeaderColumn>#</TableHeaderColumn>
-                  <TableHeaderColumn>GitHub Username</TableHeaderColumn>
-                  <TableHeaderColumn>Profile Link</TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false}>
-                {users.map((user, index) => {
-                  return (
-                    <TableRow key={user.login}>
-                      <TableRowColumn>{index + 1}</TableRowColumn>
-                      <TableRowColumn>{user.login}</TableRowColumn>
-                      <TableRowColumn>
-                        <a href={user.html_url} target="_blank">
-                          Visit GitHub Profile
-                        </a>
-                      </TableRowColumn>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+          {fetching && <CircularProgress />}
+          <section className="results" style={styles.root}>
+            <GridList
+              cellHeight={180}
+              style={styles.gridList}
+              className={classnames("results-table", {
+                "results-table-show": users.length > 0,
+              })}
+            >
+              {users.map(user => {
+                return (
+                  <GridTile
+                    key={user.login}
+                    title={user.login}
+                    actionIcon={
+                      <IconButton
+                        onClick={() => this.openGithubProfile(user.html_url)}
+                        style={{ color: "white" }}
+                      >
+                        <i class="material-icons">link</i>
+                      </IconButton>
+                    }
+                  >
+                    <img src={user.avatar_url} />
+                  </GridTile>
+                );
+              })}
+            </GridList>
           </section>
         </div>
       </MuiThemeProvider>

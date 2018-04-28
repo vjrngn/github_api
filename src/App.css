@@ -5,8 +5,8 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .search-bar {
@@ -24,8 +24,6 @@ body {
 .results {
   max-width: 920px;
   margin: 0 10px 5px;
-  max-height: calc(0.9 * 100vh);
-  overflow: auto;
 }
 
 .results-table {
