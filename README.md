@@ -12,7 +12,7 @@ Clone the repository
   cd github_api && yarn
 ```
 
-You need to provide an access token to serach for users. Go to the [settings](https://github.com/settings/tokens) page of your GitHub profile to create a new personal access token.
+You need to provide an access token to search for users. Go to the [settings](https://github.com/settings/tokens) page of your GitHub profile to create a new personal access token.
 
 Let's tell the application about our access token.
 
