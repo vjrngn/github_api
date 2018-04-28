@@ -46,8 +46,21 @@ class App extends Component {
   };
 
   render() {
-    window.client = client;
     const { users, fetching } = this.state;
+    const textFieldStyles = {
+      inputStyle: {
+        color: "#72DDF7",
+      },
+      hintStyle: {
+        color: "rgba(255,255,255,0.4)",
+      },
+      underlineStyle: {
+        borderColor: "rgba(255, 255, 255, 0.25)",
+      },
+      underlineFocusStyle: {
+        borderColor: "#72DDF7",
+      },
+    };
 
     return (
       <MuiThemeProvider>
@@ -56,23 +69,18 @@ class App extends Component {
             <TextField
               hintText="Search Users"
               onChange={this.handleChange}
-              hintStyle={{
-                color: "rgba(255,255,255,0.4)",
-              }}
-              underlineStyle={{
-                borderColor: "rgba(255, 255, 255, 0.25)",
-              }}
-              underlineFocusStyle={{
-                borderColor: "#72DDF7",
-              }}
+              {...textFieldStyles}
             />
           </section>
           <Divider inset={true} />
           <section className="results">
             {fetching && <CircularProgress />}
-            <Table className={classnames("results-table", {
-              "results-table-show": users.length > 0
-            })} selectable={false}>
+            <Table
+              className={classnames("results-table", {
+                "results-table-show": users.length > 0,
+              })}
+              selectable={false}
+            >
               <TableHeader displayRowCheckbox={false}>
                 <TableRow>
                   <TableHeaderColumn>#</TableHeaderColumn>
